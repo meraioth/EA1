@@ -3,17 +3,14 @@
 
 class BinarySearchTree
 {
-    private:
+    public:
         struct tree_node
         {
            tree_node* left;
            tree_node* right;
-           int height;
            int data;
         };
         tree_node* root;
-
-    public:
         BinarySearchTree();
         bool isEmpty();
         tree_node* busqueda(int data);
