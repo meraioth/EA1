@@ -39,11 +39,11 @@ void BinarySearchTree::imprimir(BinarySearchTree::tree_node* node){
     }
     if(node->left){
     	imprimir(node->left);
-    }  
+    }
     cout << node->data << endl;
 	if(node->right){
     	imprimir(node->right);
-    }  
+    }
 }
 
 void BinarySearchTree::insertar(int data)
