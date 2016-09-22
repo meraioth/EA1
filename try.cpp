@@ -15,10 +15,10 @@ al.insertar(1);
 //al.imprimir(al.root);
 al.insertar(11);
 al.insertar(998);
-al.imprimir(al.root);
+al.imprimir(NULL);
 for ( int j = 0 ; j<1000; j+=10){
 	//cout<<j<<'\t';
-	al.insert(al.root,j);
+	al.insertar(j);
 	
 }
 // for (int i = 0; i< 1000; i++){
@@ -26,9 +26,9 @@ for ( int j = 0 ; j<1000; j+=10){
 // 	al.insertar(i);
 
 // }
-al.imprimir(al.root);
+al.imprimir(NULL);
 
-AVL::tree_node* node=  al.busqueda(1);
+al.busqueda(1);
 
 
 

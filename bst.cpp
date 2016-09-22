@@ -17,6 +17,7 @@ BinarySearchTree::tree_node* BinarySearchTree::busqueda(int data){
     curr = root;
     while(curr)    {
         if(data == curr->data){
+            cout<<curr->data<<endl;
             return curr;
         }
         else if(data < curr->data){
