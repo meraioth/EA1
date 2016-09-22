@@ -52,13 +52,11 @@ BinarySearchTree::tree_node* BinarySearchTree::insertar(int data)
     child->data = data;
     child->left = NULL;
     child->right = NULL;
-    child->height = 1;
     parent = NULL;
 
     // is this a new tree?
     if(isEmpty()){
         root = child;
-        root->height = 0;
         root->parent = NULL;
     }
     else
