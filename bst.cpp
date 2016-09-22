@@ -1,6 +1,8 @@
 #include "bst.h"
 #include <iostream>
 #include <iomanip>
+#include <stdio.h>
+#include <stdlib.h>
 using namespace std;
 
 BinarySearchTree::BinarySearchTree()
