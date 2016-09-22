@@ -1,5 +1,6 @@
 #include "bst.h"
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 BinarySearchTree::BinarySearchTree()
@@ -10,6 +11,30 @@ BinarySearchTree::BinarySearchTree()
 bool BinarySearchTree::isEmpty()
 {
     return root==NULL;
+}
+
+void BinarySearchTree::postorder(tree_node* p, int indent)
+{
+    if(isEmpty()){
+        return;
+    }
+    if(p == NULL){
+    	p = root;
+    }
+    if(p != NULL) {
+        if(p->right) {
+            postorder(p->right, indent+4);
+        }
+        if (indent) {
+            std::cout << std::setw(indent) << ' ';
+        }
+        if (p->right) std::cout<<" /\n" << std::setw(indent) << ' ';
+        std::cout<< p->data << "\n ";
+        if(p->left) {
+            std::cout << std::setw(indent) << ' ' <<" \\\n";
+            postorder(p->left, indent+4);
+        }
+    }
 }
 
 BinarySearchTree::tree_node* BinarySearchTree::busqueda(int data){

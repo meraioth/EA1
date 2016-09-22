@@ -5,8 +5,8 @@
 class SplayTree : public BinarySearchTree{
 public:
     BinarySearchTree::tree_node* insertar_splay(int data);
-    void Splay(tree_node* node);
-    void left_rotate();
-    void right_rotate();
+    void splay(tree_node* node);
+    void left_rotate(tree_node* node);
+    void right_rotate(tree_node* node);
 };
 #endif

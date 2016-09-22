@@ -20,5 +20,6 @@ public:
     tree_node* busqueda(int data);
     tree_node* insertar(int data);
     void imprimir(tree_node* node);
+    void postorder(tree_node* node, int indent=0);
 };
 #endif
