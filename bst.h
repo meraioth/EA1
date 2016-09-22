@@ -12,6 +12,7 @@ protected:
        tree_node* parent;
        int height;
        int data;
+       char color;
     };
     tree_node* root;
 
