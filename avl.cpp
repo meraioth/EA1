@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-BinarySearchTree::tree_node* AVL::insertar(BinarySearchTree::tree_node* p, int data) // insert k data in a tree with p root
+BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* p, int data) // insert k data in a tree with p root
 {
     if( !p ){ 
 	    	BinarySearchTree::tree_node* child = new tree_node;
@@ -16,6 +16,11 @@ BinarySearchTree::tree_node* AVL::insertar(BinarySearchTree::tree_node* p, int d
     else
         p->right = insert(p->right,data);
     return balance(p);
+}
+
+BinarySearchTree::tree_node* AVL::insertar(int data){
+
+    return AVL::insert(root,data);
 }
 
 
@@ -57,8 +62,8 @@ BinarySearchTree::tree_node* AVL::ll_rotation(BinarySearchTree::tree_node* p){
     temp=p->left;
     p->left=temp->right;
     temp->right=p;
-    p->height= max(p->left.height,p->right.height)+1;
-    temp-> height = max(temp->left.height,p.height)+1;
+    p->height= max(p->left->height,p->right->height)+1;
+    temp-> height = max(temp->left->height,p->height)+1;
 
     return p;
 
