@@ -1,4 +1,3 @@
-
 #include "bst.h"
 #include <iostream>
 using namespace std;
@@ -46,18 +45,21 @@ void BinarySearchTree::imprimir(BinarySearchTree::tree_node* node){
     }
 }
 
-void BinarySearchTree::insertar(int data)
+BinarySearchTree::tree_node* BinarySearchTree::insertar(int data)
 {
     tree_node* child = new tree_node;
     tree_node* parent;
     child->data = data;
     child->left = NULL;
     child->right = NULL;
+    child->height = 1;
     parent = NULL;
 
     // is this a new tree?
     if(isEmpty()){
         root = child;
+        root->height = 0;
+        root->parent = NULL;
     }
     else
     {
@@ -75,9 +77,10 @@ void BinarySearchTree::insertar(int data)
                 curr = curr->left;
             }
         }
-        if(child->data < parent->data)
-           parent->left = child;
-        else
-           parent->right = child;
+        if(child->data < parent->data)parent->left = child;
+        else parent->right = child;
+        parent->height++;
+        child->parent = parent;
     }
+    return child;
 }
