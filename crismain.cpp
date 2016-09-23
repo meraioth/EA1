@@ -1,14 +1,20 @@
 #include "bst.h"
 #include "rbtree.h"
+#include "avl.h"
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <ctime>
 using namespace std;
 
 int main(int argc, char *argv[]) {
+    std::clock_t start;
+    double duration;
+
     RedBlackTree rb;
-    int max = 1000;
+    AVL av;
+
+    int max = 100000;
     int datos[max];
     for (size_t i = 0; i < max; i++) {
       datos[i]=i+1;
@@ -19,9 +25,20 @@ int main(int argc, char *argv[]) {
       datos[i] = datos[j];
       datos[j] = aux;
     }
+    //RBTree
+    start = clock();
     for (size_t i = 0; i < max; i++) {
       rb.insertarrbt(datos[i]);
     }
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    std::cout<<"RBTree: "<< duration <<'\n';
+
+    start = clock();
+    for (size_t i = 0; i < max; i++) {
+      av.insertar(datos[i]);
+    }
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    std::cout<<"AVL: "<< duration <<'\n';
 
     //DESPLEGAR ARBOL PNG
     char gol;

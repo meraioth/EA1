@@ -80,7 +80,7 @@ void RedBlackTree::insert_case4(tree_node *t)
       if ((t == t->parent->left)&&(t->parent==g->right))
       {
       rightrotate(t->parent);
-      t->right;
+      t=t->right;
       }
   }
   insert_case5(t);
