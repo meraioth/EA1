@@ -16,30 +16,6 @@ bool BinarySearchTree::isEmpty()
     return root==NULL;
 }
 
-void BinarySearchTree::postorder(tree_node* p, int indent)
-{
-    if(isEmpty()){
-        return;
-    }
-    if(p == NULL){
-    	p = root;
-    }
-    if(p != NULL) {
-        if(p->right) {
-            postorder(p->right, indent+4);
-        }
-        if (indent) {
-            std::cout << std::setw(indent) << ' ';
-        }
-        if (p->right) std::cout<<" /\n" << std::setw(indent) << ' ';
-        std::cout<< p->data << "\n ";
-        if(p->left) {
-            std::cout << std::setw(indent) << ' ' <<" \\\n";
-            postorder(p->left, indent+4);
-        }
-    }
-}
-
 BinarySearchTree::tree_node* BinarySearchTree::busqueda(int data){
     tree_node* curr;
     curr = root;
@@ -55,23 +31,7 @@ BinarySearchTree::tree_node* BinarySearchTree::busqueda(int data){
             curr = curr->right;
         }
     }
-    return NULL;
-}
-
-void BinarySearchTree::imprimir(BinarySearchTree::tree_node* node){
-    if(isEmpty()){
-        return;
-    }
-    if(node == NULL){
-    	node = root;
-    }
-    if(node->left){
-    	imprimir(node->left);
-    }
-    cout << node->data << endl;
-	if(node->right){
-    	imprimir(node->right);
-    }
+    return curr;
 }
 
 BinarySearchTree::tree_node* BinarySearchTree::insertar(int data)
@@ -83,17 +43,16 @@ BinarySearchTree::tree_node* BinarySearchTree::insertar(int data)
     child->right = NULL;
     parent = NULL;
 
-    // is this a new tree?
+    // si esta vacio
     if(isEmpty()){
         root = child;
         root->parent = NULL;
     }
     else
     {
-        //Note: ALL insertions are as leaf nodes
+        //nodo actual, partimos con la raiz
         tree_node* curr;
         curr = root;
-        // Find the Node's parent
         while(curr)
         {
             parent = curr;
@@ -106,7 +65,6 @@ BinarySearchTree::tree_node* BinarySearchTree::insertar(int data)
         }
         if(child->data < parent->data)parent->left = child;
         else parent->right = child;
-        parent->height++;
         child->parent = parent;
     }
     return child;
