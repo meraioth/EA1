@@ -32,14 +32,13 @@ BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* p, int dat
     tree_node * t=balance(p);
     root=t;
 
-    cout<<"p dspues d balance : "<<t->data<<endl;
+    
     
     return t;
 }
 
 BinarySearchTree::tree_node* AVL::insertar(int data){
     
-    cout<<"insertando : "<<data<<endl;
     return insert(root,data);
 }
 
@@ -108,14 +107,11 @@ BinarySearchTree::tree_node* AVL::rl_rotation(BinarySearchTree::tree_node* p){
 
 
 BinarySearchTree::tree_node* AVL::balance(BinarySearchTree::tree_node* p)
-{   cout<<"entro a balance nodo: "<<p->data<<endl;
-    dis();
-    cout<<endl;
+{   
     int b_factor=bfactor(p);
     if( b_factor>1)
     {
         if( bfactor(p->left) > 0 ){
-            cout<<"roto simple izq"<<endl;
             p = ll_rotation(p);
         }
         else {
@@ -128,12 +124,8 @@ BinarySearchTree::tree_node* AVL::balance(BinarySearchTree::tree_node* p)
             p = rl_rotation(p);
         }
         else {
-            cout<<"roto simple der"<<endl;
             tree_node * temp=p;
             p=rr_rotation(temp);
-            dis();
-            cout<<"p: "<<p->data<<endl;
-            cout<<"raiz :"<<root->data<<endl;
         }
     }
     return p;
