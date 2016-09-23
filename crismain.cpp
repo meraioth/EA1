@@ -8,20 +8,35 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     RedBlackTree rb;
-    for (size_t i = 0; i < 20; i++) {
-      rb.insertarrbt(i);
+    int max = 1000;
+    int datos[max];
+    for (size_t i = 0; i < max; i++) {
+      datos[i]=i+1;
     }
+    for (size_t i = 0; i < max; i++) {
+      int j = rand()%max;
+      int aux = datos[i];
+      datos[i] = datos[j];
+      datos[j] = aux;
+    }
+    for (size_t i = 0; i < max; i++) {
+      rb.insertarrbt(datos[i]);
+    }
+
+    //DESPLEGAR ARBOL PNG
     char gol;
     std::cout << "\nRedBlackTree Creado Con Exito\n" << std::endl;
     std::cout << "Desea generar imagen del arbol?(s/n)" << std::endl;
     std::cin >> gol;
+    system("clear");
+    std::cout << "espere..." << std::endl;
     if (gol == 's') {
       FILE * pFile = fopen("rbtree.dot" , "w");
       rb.rbt_print_dot(NULL,pFile);
       fclose(pFile);
       system("dot -Tpng rbtree.dot -o rbt.png");
-      //x system("rm rbtree.dot");
+      system("rm rbtree.dot");
     }
-    rb.disp();
+    system("clear");
 
 }

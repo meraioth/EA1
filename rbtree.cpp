@@ -74,12 +74,12 @@ void RedBlackTree::insert_case4(tree_node *t)
 
   if ((t == t->parent->right) && (t->parent == g->left))
   {
-      leftrotate(t);
+      leftrotate(t->parent);
       t=t->left;
   }else{
       if ((t == t->parent->left)&&(t->parent==g->right))
       {
-      rightrotate(t);
+      rightrotate(t->parent);
       t->right;
       }
   }
