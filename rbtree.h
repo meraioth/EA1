@@ -3,6 +3,9 @@
 
 class RedBlackTree : public BinarySearchTree
 {
+    private:
+      BinarySearchTree::tree_node * grandpa(tree_node *);
+      BinarySearchTree::tree_node * uncle(tree_node *);
 
     public:
       void insertarrbt(int data);
@@ -13,8 +16,6 @@ class RedBlackTree : public BinarySearchTree
       void insert_case5(tree_node *);
       void leftrotate(tree_node *t);
       void rightrotate(tree_node *t);
-      void postleftrotate(tree_node *g);
-      void postrightrotate(tree_node *g);
 
       void disp();
       void display( tree_node *);
