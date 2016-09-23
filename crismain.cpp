@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     RedBlackTree rb;
-    for (size_t i = 3; i > 0; i--) {
+    for (size_t i = 0; i < 20; i++) {
       rb.insertarrbt(i);
     }
     char gol;
