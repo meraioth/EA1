@@ -1,34 +1,40 @@
 //#include "bst.h"
 #include <iostream>
-#include "avl.cpp"
+#include "bst.h"
+#include "avl.h"
 #include <time.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+
 using namespace std;
 int main(int argc, char *argv[]) {
 srand(0);
 AVL al ;
+cout<<al.isEmpty()<<endl;
 al.insertar(10);
 //al.imprimir(al.root);
-al.insertar(1);
-//al.imprimir(al.root);
 al.insertar(11);
-al.insertar(998);
-al.imprimir(NULL);
-for ( int j = 0 ; j<1000; j+=10){
-	//cout<<j<<'\t';
-	al.insertar(j);
-	
+//al.imprimir(al.root);
+al.insertar(12);
+// al.insertar(9);
+// al.insertar(13);
+// al.insertar(14);
+
+cout<<"matias la cagaste"<<endl;
+al.dis();
+
+for (int i = 0; i< 10; i++){
+	int a = rand();
+	al.insertar(i);
+
 }
-// for (int i = 0; i< 1000; i++){
-// 	int a = rand();
-// 	al.insertar(i);
-
-// }
 al.imprimir(NULL);
-
-al.busqueda(1);
+FILE * pFile;
+    pFile = fopen ("myfile.dot" , "w");
+    al.bst_print_dot(NULL,pFile);
+    system("dot -Tpng myfile.dot -o arbol.png");
+    fclose (pFile);
 
 
 
