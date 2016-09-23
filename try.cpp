@@ -21,14 +21,14 @@ al.insertar(12);
 // al.insertar(13);
 // al.insertar(14);
 
-cout<<"matias la cagaste"<<endl;
-al.dis();
+
 
 for (int i = 0; i< 10; i++){
 	int a = rand();
 	al.insertar(i);
 
 }
+al.dis();
 al.imprimir(NULL);
 FILE * pFile;
     pFile = fopen ("myfile.dot" , "w");

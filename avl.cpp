@@ -36,8 +36,7 @@ BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* p, int dat
        // cout<<"padre :"<<p->data<<" hijo derecho :"<<p->left->data<<endl;
     }
     imprimir(NULL);
-    return p;
-    //return balance(p);
+    return balance(p);
 }
 
 // BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* root, int value){
@@ -144,6 +143,7 @@ BinarySearchTree::tree_node* AVL::rl_rotation(BinarySearchTree::tree_node* p){
 BinarySearchTree::tree_node* AVL::balance(BinarySearchTree::tree_node* p)
 {
     int b_factor=bfactor(p);
+    cout<<"b_factor nodo:"<<p->data<<" :"<< b_factor<<endl;
     if( b_factor>1)
     {
         if( bfactor(p->left) > 0 )
