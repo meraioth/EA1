@@ -11,6 +11,7 @@ protected:
        tree_node* right;
        tree_node* parent;
        int data;
+       char color;
     };
     tree_node* root;
 
