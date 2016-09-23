@@ -36,7 +36,9 @@ BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* p, int dat
        // cout<<"padre :"<<p->data<<" hijo derecho :"<<p->left->data<<endl;
     }
     imprimir(NULL);
-    return balance(p);
+    tree_node * t=balance(p);
+    cout<<"p dspues d balance : "<<t->data<<endl;
+    return t;
 }
 
 // BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* root, int value){
@@ -102,6 +104,7 @@ BinarySearchTree::tree_node* AVL::rr_rotation(BinarySearchTree::tree_node* p){
     temp=p->right;
     p->right=temp->left;
     temp->left=p;
+    cout<<"nodo raiz dspues d rotar: "<<temp->data<<endl;
     return temp;
 
 
@@ -143,20 +146,28 @@ BinarySearchTree::tree_node* AVL::rl_rotation(BinarySearchTree::tree_node* p){
 BinarySearchTree::tree_node* AVL::balance(BinarySearchTree::tree_node* p)
 {
     int b_factor=bfactor(p);
-    cout<<"b_factor nodo:"<<p->data<<" :"<< b_factor<<endl;
     if( b_factor>1)
     {
-        if( bfactor(p->left) > 0 )
-            p = ll_rotation(p);
-        else 
-            p=lr_rotation(p);
+        if( bfactor(p->left) > 0 ){
+            cout<<"roto simple izq"<<endl;
+            p = lr_rotation(p);
+        }
+        else {
+            p=ll_rotation(p);
+        }
     }
     else if( b_factor < -1 )
     {
-        if( bfactor(p->right) > 0  )
+        if( bfactor(p->right) > 0  ){
             p = rl_rotation(p);
-        else 
-            p=rr_rotation(p);
+        }
+        else {
+            cout<<"roto simple der"<<endl;
+            tree_node * temp=p;
+            p=rr_rotation(temp);
+            cout<<"p: "<<p->data<<endl;
+            cout<<"raiz :"<<root->data<<endl;
+        }
     }
     return p;
 }

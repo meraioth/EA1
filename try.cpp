@@ -10,29 +10,23 @@
 using namespace std;
 int main(int argc, char *argv[]) {
 srand(0);
-AVL al ;
-cout<<al.isEmpty()<<endl;
-al.insertar(10);
-//al.imprimir(al.root);
-al.insertar(11);
-//al.imprimir(al.root);
-al.insertar(12);
-// al.insertar(9);
-// al.insertar(13);
-// al.insertar(14);
+
+AVL aldo ;
+aldo.insertar(100);
+aldo.imprimir(NULL);
+aldo.insertar(101);
+aldo.imprimir(NULL);
+aldo.insertar(103);
+aldo.imprimir(NULL);
+// aldo.insertar(102);
+// aldo.imprimir(NULL);
+// aldo.dis();
 
 
 
-for (int i = 0; i< 10; i++){
-	int a = rand();
-	al.insertar(i);
-
-}
-al.dis();
-al.imprimir(NULL);
 FILE * pFile;
     pFile = fopen ("myfile.dot" , "w");
-    al.bst_print_dot(NULL,pFile);
+    aldo.bst_print_dot(NULL,pFile);
     system("dot -Tpng myfile.dot -o arbol.png");
     fclose (pFile);
 
