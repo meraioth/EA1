@@ -4,9 +4,7 @@ using namespace std;
 
 BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* p, int data) 
 {
-    cout<<"insertando : "<<data<<endl;
     if(isEmpty()) {
-        cout<<"es raiz"<<endl;
         BinarySearchTree::tree_node* child = new tree_node;
         child->data = data;
         child->left = NULL;
@@ -22,46 +20,22 @@ BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* p, int dat
 		    child->data = data;
 		    child->left = NULL;
 		    child->right = NULL;
-            cout<<"creo nueva hoja"<<endl;
 		    return child;
 			}
     if( data<p->data ){
-       cout<<"el dato:"<<data<<" es hijo izquierdo"<<endl;
         p->left = insert(p->left,data);
-        //cout<<"padre :"<<p->data<<endl;
     }
     else{
-        cout<<"el dato:"<<data<<" es hijo derecho"<<endl;
         p->right = insert(p->right,data);
-       // cout<<"padre :"<<p->data<<" hijo derecho :"<<p->left->data<<endl;
     }
-    imprimir(NULL);
+
     tree_node * t=balance(p);
+    root=t;
+
     cout<<"p dspues d balance : "<<t->data<<endl;
+    
     return t;
 }
-
-// BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* root, int value){
-//     if (root == NULL)
-//     {
-//         root = new BinarySearchTree::tree_node;
-//         root->data = value;
-//         root->left = NULL;
-//         root->right = NULL;
-//         return root;
-//     }
-//     else if (value < root->data)
-//     {
-//         root->left = insert(root->left, value);
-//         root = balance (root);
-//     }
-//     else if (value >= root->data)
-//     {
-//         root->right = insert(root->right, value);
-//         root = balance (root);
-//     }
-//     return root;
-// }
 
 BinarySearchTree::tree_node* AVL::insertar(int data){
     
@@ -80,7 +54,6 @@ int AVL::height(BinarySearchTree::tree_node* temp)
         int r_height = height (temp->right);
         int max_height = max (l_height, r_height);
         h = max_height + 1;
-        cout<<"altura de :"<<temp->data<<" :"<<h<<endl;
     }
 
     return h;
@@ -88,13 +61,9 @@ int AVL::height(BinarySearchTree::tree_node* temp)
 
 int AVL::bfactor(BinarySearchTree::tree_node* temp)
 {
-    cout<<"nodo del bfactor"<<temp->data<<endl;
     int l_height = height (temp->left);
-    cout<<"altura izq"<<l_height<<endl;
     int r_height = height (temp->right);
-    cout<<"altura der"<<r_height<<endl;
     int b_factor= l_height - r_height;
-    cout<<b_factor<<endl;
 
     return b_factor;
 }
@@ -104,7 +73,6 @@ BinarySearchTree::tree_node* AVL::rr_rotation(BinarySearchTree::tree_node* p){
     temp=p->right;
     p->right=temp->left;
     temp->left=p;
-    cout<<"nodo raiz dspues d rotar: "<<temp->data<<endl;
     return temp;
 
 
@@ -116,11 +84,7 @@ BinarySearchTree::tree_node* AVL::ll_rotation(BinarySearchTree::tree_node* p){
     temp=p->left;
     p->left=temp->right;
     temp->right=p;
-    
-
     return temp;
-
-
 }
 
 BinarySearchTree::tree_node* AVL::lr_rotation(BinarySearchTree::tree_node* p){
@@ -144,16 +108,18 @@ BinarySearchTree::tree_node* AVL::rl_rotation(BinarySearchTree::tree_node* p){
 
 
 BinarySearchTree::tree_node* AVL::balance(BinarySearchTree::tree_node* p)
-{
+{   cout<<"entro a balance nodo: "<<p->data<<endl;
+    dis();
+    cout<<endl;
     int b_factor=bfactor(p);
     if( b_factor>1)
     {
         if( bfactor(p->left) > 0 ){
             cout<<"roto simple izq"<<endl;
-            p = lr_rotation(p);
+            p = ll_rotation(p);
         }
         else {
-            p=ll_rotation(p);
+            p=lr_rotation(p);
         }
     }
     else if( b_factor < -1 )
@@ -165,6 +131,7 @@ BinarySearchTree::tree_node* AVL::balance(BinarySearchTree::tree_node* p)
             cout<<"roto simple der"<<endl;
             tree_node * temp=p;
             p=rr_rotation(temp);
+            dis();
             cout<<"p: "<<p->data<<endl;
             cout<<"raiz :"<<root->data<<endl;
         }

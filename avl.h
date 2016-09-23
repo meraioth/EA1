@@ -15,5 +15,6 @@ class AVL : public BinarySearchTree{
 	    BinarySearchTree::tree_node* lr_rotation(tree_node* node);
 	    BinarySearchTree::tree_node* rl_rotation(tree_node* node);
 	    BinarySearchTree::tree_node* balance(tree_node* node);
+	    
 };
 #endif

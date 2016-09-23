@@ -12,16 +12,24 @@ int main(int argc, char *argv[]) {
 srand(0);
 
 AVL aldo ;
-aldo.insertar(100);
-aldo.imprimir(NULL);
-aldo.insertar(101);
-aldo.imprimir(NULL);
-aldo.insertar(103);
-aldo.imprimir(NULL);
-// aldo.insertar(102);
+aldo.insertar(1000);
+aldo.dis();
+aldo.insertar(102);
 // aldo.imprimir(NULL);
 // aldo.dis();
+aldo.insertar(103);
 
+aldo.insertar(105);
+
+aldo.insertar(1);
+aldo.insertar(2);
+aldo.insertar(50);
+aldo.insertar(60);
+aldo.insertar(1010);
+aldo.insertar(0);
+aldo.insertar(-1);
+
+//for(int i=0 ; i<500 ;i+=50) aldo.insertar(i);
 
 
 FILE * pFile;
