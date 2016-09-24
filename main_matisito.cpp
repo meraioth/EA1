@@ -9,24 +9,23 @@ using namespace std;
 
 
 int main(int argc, char *argv[]) {
-    //SplayTree sp;
+    SplayTree sp;
     srand (time(NULL));
-    AVL sp;
-    int datos [500];
-    for(int i = 0 ; i < 500; i++){
+    int datos [1000];
+    for(int i = 0 ; i < 1000; i++){
         datos[i] = i+1;
     }
     //se desordenan de forma randomica
     int j;
-    for(int i = 0 ; i < 500 ; i++){
-        j = rand()%500;
+    for(int i = 0 ; i < 1000 ; i++){
+        j = rand()%1000;
         int aux = datos[i];
         datos[i] = datos[j];
         datos[j] = aux;
     }
-    for(int i = 0 ; i < 500; i++){
+    for(int i = 0 ; i < 1000; i++){
         //j = rand()%100;
-        sp.insertar_avl(datos[i]);
+        sp.insertar_splay(datos[i]);
     }
     //sp.imprimir(NULL);
     //sleep(10);

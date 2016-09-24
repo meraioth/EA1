@@ -94,6 +94,56 @@ void BinarySearchTree::fix_height(tree_node* node){
     }
 }
 
+void BinarySearchTree::left_rotate( tree_node* node ) {
+    tree_node* x = node->right;
+    tree_node* grandparent = node->parent;
+    if(x){
+        tree_node* b = x->left;
+        node->right = b;
+        if(b){
+            b->parent = node;
+        }
+        x->parent = grandparent;
+        x->left = node;
+        node->parent = x;
+    }
+    if(grandparent){
+        if(node == grandparent->right){
+            grandparent->right = x;
+        }else{
+            grandparent->left = x;
+        }
+    }else{
+        root = x;
+    }
+    fix_height(node);
+}
+
+void BinarySearchTree::right_rotate( tree_node* node ) {
+    tree_node* x = node->left;
+    tree_node* grandparent = node->parent;
+    if(x){
+        tree_node* b = x->right;
+        node->left = b;
+        if(b){
+            b->parent = node;
+        }
+        x->parent = grandparent;
+        x->right = node;
+        node->parent = x;
+    }
+    if(grandparent){
+        if(node == grandparent->right){
+            grandparent->right = x;
+        }else{
+            grandparent->left = x;
+        }
+    }else{
+        root = x;
+    }
+    fix_height(node);
+ }
+
 void BinarySearchTree::bst_print_dot_null(int data, int nullcount, FILE* stream)
 {
     fprintf(stream, "    null%d [shape=point];\n", nullcount);
@@ -125,15 +175,6 @@ void BinarySearchTree::bst_print_dot_aux(tree_node* node, FILE* stream)
         bst_print_dot_null(node->data, nullcount++, stream);
 }
 
-void BinarySearchTree::imprimir(tree_node* nodo){
-    if (nodo == NULL)nodo = root;
-    if(nodo != NULL){
-        imprimir(nodo->left);
-        cout << nodo->data << endl;
-        imprimir(nodo->right);
-    }
-
-}
 void BinarySearchTree::bst_print_dot(tree_node* tree, FILE* stream)
 {
     if(isEmpty()){

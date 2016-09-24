@@ -22,8 +22,11 @@ public:
     bool isEmpty();
     tree_node* busqueda(int data);
     tree_node* insertar(int data);
+    void left_rotate( tree_node* node );
+    void right_rotate( tree_node* node );
     void fix_height(tree_node* node);
-    void imprimir(tree_node* nodo);
+
+    //funciones para visualizar
     void bst_print_dot_null(int data, int nullcount, FILE* stream);
     void bst_print_dot_aux(tree_node* node, FILE* stream);
     void bst_print_dot(tree_node* tree, FILE* stream);
