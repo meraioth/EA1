@@ -5,37 +5,29 @@
 #include<iostream>
 using namespace std;
 
+BinarySearchTree::tree_node* RedBlackTree::grandpa(BinarySearchTree::tree_node *t)
+{
+  if ((t != NULL) && (t->parent != NULL))
+    return t->parent->parent;
+  else
+    return NULL;
+}
+
+BinarySearchTree::tree_node* RedBlackTree::uncle(BinarySearchTree::tree_node *t)
+{
+  tree_node *g = grandpa(t);
+  if (g == NULL)
+    return NULL; // No grandparent means no uncle
+  if (t->parent == g->left)
+    return g->right;
+  else
+    return g->left;
+}
+
 void RedBlackTree::insertarrbt(int data)
 {
-  tree_node *p,*q;
-  tree_node *t = new tree_node; //creamos un nuevo nodo
-  t->data = data;
-  t->left = NULL;
-  t->right=NULL;
-  t->color='r'; //inicializar en rojo
-  p=root;
-  q=NULL;
-  if(root==NULL) //si no hay nodos entonces la clave es la raiz
-  {
-        root=t;
-        t->parent=NULL;
-  }
-  else
-  {
-      while(p!=NULL)//mientras haya un padre
-      {
-           q=p;
-           if(p->data<t->data) //Busca hoja donde insertar
-               p=p->right;
-           else
-               p=p->left;
-      }
-      t->parent=q; //asigna como padre al nodo correspondiente
-      if(q->data<t->data)
-           q->right=t;
-      else
-           q->left=t;
-  }
+  tree_node *t = insertar(data);
+  t->color = 'r';
   insert_case1(t);
 }
 
@@ -57,59 +49,38 @@ void RedBlackTree::insert_case2(tree_node *t)
     insert_case3(t);
 }
 
+
 //Padre y Tio son ROJOS
 void RedBlackTree::insert_case3(tree_node *t)
 {
-  tree_node *g = new tree_node;
-  if ((t!=NULL) && (t->parent != NULL)) {
-    g = t->parent->parent; //abuelo
-  }else{
-    g = NULL;
-  }
-
-  tree_node *u = new tree_node;
-  //Buscar Tio
-  if(g->left == t->parent)
-  {
-    if (g->right != NULL) {
-        u = g->right; //tio
+    tree_node *u = uncle(t);
+    tree_node *g;
+    if ((u!=NULL)&&(u->color=='r'))
+    {
+      t->parent->color = 'b';
+      u->color = 'b';
+      g = grandpa(t);
+      g->color = 'r';
+      insert_case1(g);
     }else{
-        rightrotate(g);
+      insert_case4(t);
     }
-
-  }else{
-      if (g->left != NULL) {
-        u = g->left;  //tio
-      }else{
-        leftrotate(g);
-      }
-  }
-  //cambiar colores
-  if ((u != NULL) && (u->color == 'r'))
-  {
-    t->parent->color = 'b';
-    u->color = 'b';
-    g->color = 'r';
-    insert_case1(g);
-  }else{
-    insert_case4(t);
-  }
 }
 
-//Padre ROJO pero tio NEGRO
+//Padre ROJO pero tio NEGRO o no existe
 void RedBlackTree::insert_case4(tree_node *t)
 {
-  tree_node *g = t->parent->parent; //abuelo
+  tree_node *g = grandpa(t); //abuelo
 
   if ((t == t->parent->right) && (t->parent == g->left))
   {
-      leftrotate(t);
+      leftrotate(t->parent);
       t=t->left;
   }else{
       if ((t == t->parent->left)&&(t->parent==g->right))
       {
-      rightrotate(t);
-      t->right;
+      rightrotate(t->parent);
+      t=t->right;
       }
   }
   insert_case5(t);
@@ -118,78 +89,68 @@ void RedBlackTree::insert_case4(tree_node *t)
 //Ambos rojos
 void RedBlackTree::insert_case5(tree_node *t)
 {
-  tree_node *g = t->parent->parent; //abuelo
+  tree_node *g = grandpa(t); //abuelo
   t->parent->color = 'b';
   g->color = 'r';
   if (t == t->parent->left)
     rightrotate(g);
   else
-    leftrotate(g);
+    if((t == t->parent->right))
+      leftrotate(g);
 }
 
-void RedBlackTree::leftrotate(tree_node *t)
+void RedBlackTree::leftrotate(tree_node *node)
 {
-     if(t->parent->right==NULL)
-           return ;
-     else
-     {
-       tree_node *aux = t->parent;
-       tree_node *aux2 = t->right;
-       tree_node *aux3 = t->left;
-       aux->parent->parent->left = t;
-       t->parent = aux->parent;
-       t->left = aux;
-       t->right = aux2;
-       aux->parent = t;
-       aux->right = aux3;
-     }
+  tree_node* x = node->right;
+      tree_node* grandparent = node->parent;
+      if(x){
+          tree_node* b = x->left;
+          node->right = b;
+          if(b){
+              b->parent = node;
+          }
+          x->parent = grandparent;
+          x->left = node;
+          node->parent = x;
+      }
+      if(grandparent){
+          if(node == grandparent->right){
+              grandparent->right = x;
+          }else{
+              grandparent->left = x;
+          }
+      }else{
+          root = x;
+      }
 }
 
-void RedBlackTree::rightrotate(tree_node *t)
-{
-     if(t->parent->left==NULL)
-          return ;
-     else
-     {
-       tree_node *aux = t->parent;
-       tree_node *aux2 = t->right;
-       tree_node *aux3 = t->left;
-       aux->parent->parent->right = t;
-       t->parent = aux->parent;
-       t->left = aux2;
-       t->right = aux;
-       aux->parent = t;
-       aux->left = aux3;
-     }
-}
 
-void RedBlackTree::postleftrotate(tree_node *g)
+void RedBlackTree::rightrotate(tree_node *node)
 {
-  if (g->left->parent==NULL) {
-    return;
+  tree_node* x = node->left;
+  tree_node* grandparent = node->parent;
+  if(x){
+      tree_node* b = x->right;
+      node->left = b;
+      if(b){
+          b->parent = node;
+      }
+      x->parent = grandparent;
+      x->right = node;
+      node->parent = x;
   }
-  tree_node *temp  = g->left;
-  tree_node *temp2 = g->left->right;
-  temp->parent=g->parent;
-  temp->right=g;
-  g->parent = temp;
-  g->left=temp2;
-}
-
-void RedBlackTree::postrightrotate(tree_node *g)
-{
-  if (g->right->parent==NULL) {
-    return;
+  if(grandparent){
+      if(node == grandparent->right){
+          grandparent->right = x;
+      }else{
+          grandparent->left = x;
+      }
+  }else{
+      root = x;
   }
-  tree_node *temp  = g->right;
-  tree_node *temp2 = g->right->left;
-  temp->parent=g->parent;
-  temp->left=g;
-  g->parent = temp;
-  g->right=temp2;
 }
 
-
+//MOSTRAR****
 void RedBlackTree::disp()
 {
      display(root);
@@ -240,169 +201,7 @@ void RedBlackTree::display(tree_node *p)
      }
 }
 
-
-/*
-void RedBlackTree::insertarrbt(int data)
-{
-  int z,i=0;
-  z = data; //guardo el valor insertado
-  tree_node *p,*q;
-  tree_node *t = new tree_node; //creamos un nuevo nodo
-  t->data = z;
-  t->left = NULL;
-  t->right=NULL;
-  t->color='r'; //inicializar en rojo
-  p=root;
-  q=NULL;
-  if(root==NULL) //si no hay nodos entonces la clave es la raiz
-  {
-        root=t;
-        t->parent=NULL;
-  }
-  else
-  {
-      while(p!=NULL)//mientras haya un padre
-      {
-           q=p;
-           if(p->data<t->data) //propiedad de BinaryTree
-               p=p->right;
-           else
-               p=p->left;
-      }
-      t->parent=q; //propiedad de BinaryTree
-      if(q->data<t->data)
-           q->right=t;
-      else
-           q->left=t;
-  }
-  insert2(t);
-}
-
-void RBtree::insert2(tree_node *t)
-{
-  tree_node *u;
-  if(root==t) //comprueba elementos unicos
-  {
-    t->color='b';
-    return;
-  }
-  while(t->parent!=NULL&&t->parent->color=='r')
-  {
-      tree_node *g = t->parent->parent;//g es nodo abuelo
-      if(g->left==t->parent)//hijo izq igual al padre de t
-      {
-                   if(g->right!=NULL)//
-                   {
-                         u=g->right;
-                         if(u->color=='r')
-                         {
-                              t->parent->color='b';
-                              u->color='b';
-                              g->color='r';
-                              t=g;
-                         }
-                   }
-                   else
-                   {
-                       if(t->parent->right==t)
-                       {
-                            t=t->parent;
-                            leftrotate(t);
-                       }
-                       t->parent->color='b';
-                       g->color='r';
-                       rightrotate(g);
-                   }
-      }
-      else
-      {
-                   if(g->left!=NULL)
-                   {
-                        u=g->left;
-                        if(u->color=='r')
-                        {
-                             t->parent->color='b';
-                             u->color='b';
-                             g->color='r';
-                             t=g;
-                        }
-                   }
-                   else
-                   {
-                       if(t->parent->left==t)
-                       {
-                              t=t->parent;
-                              rightrotate(t);
-                       }
-                       t->parent->color='b';
-                       g->color='r';
-                       leftrotate(g);
-                   }
-      }
-      root->color='b';
-  }
-}
-
-void RedBlackTree::leftrotate(tree_node *p)
-{
-     if(p->right==NULL)
-           return ;
-     else
-     {
-           tree_node *y=p->right;
-           if(y->left!=NULL)
-           {
-                  p->right=y->left;
-                  y->left->parent=p;
-           }
-           else
-                  p->right=NULL;
-           if(p->parent!=NULL)
-                y->parent=p->parent;
-           if(p->parent==NULL)
-                root=y;
-           else
-           {
-               if(p==p->parent->left)
-                       p->parent->left=y;
-               else
-                       p->parent->right=y;
-           }
-           y->left=p;
-           p->parent=y;
-     }
-}
-
-void RedBlackTree::rightrotate(tree_node *p)
-{
-     if(p->left==NULL)
-          return ;
-     else
-     {
-         tree_node *y=p->left;
-         if(y->right!=NULL)
-         {
-                  p->left=y->right;
-                  y->right->parent=p;
-         }
-         else
-                 p->left=NULL;
-         if(p->parent!=NULL)
-                 y->parent=p->parent;
-         if(p->parent==NULL)
-               root=y;
-         else
-         {
-             if(p==p->parent->left)
-                   p->parent->left=y;
-             else
-                   p->parent->right=y;
-         }
-         y->right=p;
-         p->parent=y;
-     }
-}
-*/
+//GRAFICARRRRRR*****
 void RedBlackTree::rbt_print_dot_null(tree_node* node, int nullcount, FILE* stream)
 {
     fprintf(stream, "    node [fontname=\"Arial\" color=black];\n");
