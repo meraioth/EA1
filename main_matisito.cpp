@@ -20,7 +20,8 @@ int main(int argc, char *argv[]) {
     FILE *resultados_splay_busqueda;
 	resultados_splay_busqueda = fopen("resultados_splay_busqueda.txt", "w+");
 
-
+    //semilla de random
+    srand (time(NULL));
 
     begin = clock();//tiempo antes de el algoritmo
 		enigma(A,n);
@@ -28,7 +29,7 @@ int main(int argc, char *argv[]) {
 ;		time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 
 
-    srand (time(NULL));
+
     for(int n = 1000; i < 1000000; i+=1000){
         int datos [n];
         SplayTree sp;

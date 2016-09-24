@@ -8,7 +8,6 @@ class AVL : public BinarySearchTree{
 	    int bfactor(tree_node* node);
 		void left_rotate(tree_node* node);
 	    void right_rotate(tree_node* node);
-		void fix_height(tree_node* node);
 	    void balance(tree_node* node);
 };
 #endif

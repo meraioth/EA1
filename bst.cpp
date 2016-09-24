@@ -72,6 +72,28 @@ BinarySearchTree::tree_node* BinarySearchTree::insertar(int data)
     return child;
 }
 
+void BinarySearchTree::fix_height(tree_node* node){
+    int rheight, lheight;
+    while(node){
+        if(node->left){
+            lheight = node->left->height;
+        }else{
+            lheight = 1;
+        }
+        if(node->right){
+            rheight = node->right->height;
+        }else{
+            rheight = 1;
+        }
+        if(lheight > rheight){
+            node->height = lheight + 1;
+        }else{
+            node->height = rheight + 1;
+        }
+        node=node->parent;
+    }
+}
+
 void BinarySearchTree::bst_print_dot_null(int data, int nullcount, FILE* stream)
 {
     fprintf(stream, "    null%d [shape=point];\n", nullcount);

@@ -49,27 +49,6 @@ void AVL::balance(BinarySearchTree::tree_node* node)
         node = node->parent;
     }
 }
-void AVL::fix_height(tree_node* node){
-    int rheight, lheight;
-    while(node){
-        if(node->left){
-            lheight = node->left->height;
-        }else{
-            lheight = 1;
-        }
-        if(node->right){
-            rheight = node->right->height;
-        }else{
-            rheight = 1;
-        }
-        if(lheight > rheight){
-            node->height = lheight + 1;
-        }else{
-            node->height = rheight + 1;
-        }
-        node=node->parent;
-    }
-}
 
 void AVL::left_rotate( tree_node* node ) {
     tree_node* x = node->right;
