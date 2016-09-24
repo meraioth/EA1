@@ -49,3 +49,74 @@ void AVL::balance(BinarySearchTree::tree_node* node)
         node = node->parent;
     }
 }
+void AVL::fix_height(tree_node* node){
+    int rheight, lheight;
+    while(node){
+        if(node->left){
+            lheight = node->left->height;
+        }else{
+            lheight = 1;
+        }
+        if(node->right){
+            rheight = node->right->height;
+        }else{
+            rheight = 1;
+        }
+        if(lheight > rheight){
+            node->height = lheight + 1;
+        }else{
+            node->height = rheight + 1;
+        }
+        node=node->parent;
+    }
+}
+
+void AVL::left_rotate( tree_node* node ) {
+    tree_node* x = node->right;
+    tree_node* grandparent = node->parent;
+    if(x){
+        tree_node* b = x->left;
+        node->right = b;
+        if(b){
+            b->parent = node;
+        }
+        x->parent = grandparent;
+        x->left = node;
+        node->parent = x;
+    }
+    if(grandparent){
+        if(node == grandparent->right){
+            grandparent->right = x;
+        }else{
+            grandparent->left = x;
+        }
+    }else{
+        root = x;
+    }
+    fix_height(node);
+}
+
+void AVL::right_rotate( tree_node* node ) {
+    tree_node* x = node->left;
+    tree_node* grandparent = node->parent;
+    if(x){
+        tree_node* b = x->right;
+        node->left = b;
+        if(b){
+            b->parent = node;
+        }
+        x->parent = grandparent;
+        x->right = node;
+        node->parent = x;
+    }
+    if(grandparent){
+        if(node == grandparent->right){
+            grandparent->right = x;
+        }else{
+            grandparent->left = x;
+        }
+    }else{
+        root = x;
+    }
+    fix_height(node);
+ }

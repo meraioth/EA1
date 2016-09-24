@@ -44,3 +44,50 @@ void SplayTree::splay(tree_node* node){
         }
     }
 }
+void SplayTree::left_rotate( tree_node* node ) {
+    tree_node* x = node->right;
+    tree_node* grandparent = node->parent;
+    if(x){
+        tree_node* b = x->left;
+        node->right = b;
+        if(b){
+            b->parent = node;
+        }
+        x->parent = grandparent;
+        x->left = node;
+        node->parent = x;
+    }
+    if(grandparent){
+        if(node == grandparent->right){
+            grandparent->right = x;
+        }else{
+            grandparent->left = x;
+        }
+    }else{
+        root = x;
+    }
+}
+
+void SplayTree::right_rotate( tree_node* node ) {
+    tree_node* x = node->left;
+    tree_node* grandparent = node->parent;
+    if(x){
+        tree_node* b = x->right;
+        node->left = b;
+        if(b){
+            b->parent = node;
+        }
+        x->parent = grandparent;
+        x->right = node;
+        node->parent = x;
+    }
+    if(grandparent){
+        if(node == grandparent->right){
+            grandparent->right = x;
+        }else{
+            grandparent->left = x;
+        }
+    }else{
+        root = x;
+    }
+ }
