@@ -32,14 +32,15 @@ int main(int argc, char *argv[]) {
     }
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     std::cout<<"RBTree: "<< duration <<'\n';
-
+/*
+    //AVL
     start = clock();
     for (size_t i = 0; i < max; i++) {
-      av.insertar(datos[i]);
+      av.insertar_avl(datos[i]);
     }
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     std::cout<<"AVL: "<< duration <<'\n';
-
+    */
     //DESPLEGAR ARBOL PNG
     char gol;
     std::cout << "\nRedBlackTree Creado Con Exito\n" << std::endl;
