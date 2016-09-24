@@ -1,10 +1,14 @@
 #include "splaytree.h"
 #include <iostream>
+#include <random>
 using namespace std;
 
 BinarySearchTree::tree_node* SplayTree::insertar_splay(int data){
     tree_node* node = insertar(data);
-    splay(node);
+    if(node){
+        splay(node);
+    }
+
 }
 
 BinarySearchTree::tree_node* SplayTree::busqueda_splay(int data){
@@ -40,7 +44,6 @@ void SplayTree::splay(tree_node* node){
         }
     }
 }
-
 void SplayTree::left_rotate( tree_node* node ) {
     tree_node* x = node->right;
     tree_node* grandparent = node->parent;
@@ -63,28 +66,84 @@ void SplayTree::left_rotate( tree_node* node ) {
     }else{
         root = x;
     }
+    if(x){
+        int l_height,r_height,rx_height;
+        if(node->left){
+            l_height = node->left->height;
+        }else{
+            l_height = 0;
+        }
+        if(node->right){
+            r_height = node->right->height;
+        }else{
+            r_height = 0;
+        }
+        if(r_height > l_height){
+            node->height = r_height+1;
+        }else{
+            node->height = l_height+1;
+        }
+        if(x->right){
+            rx_height = x->right->height;
+        }else{
+            rx_height = 0;
+        }
+        if(rx_height > node->height){
+            x->height = rx_height  + 1;
+        }else{
+            x->height = node->height + 1;
+        }
+    }
 }
 
- void SplayTree::right_rotate( tree_node* node ) {
-     tree_node* x = node->left;
-     tree_node* grandparent = node->parent;
-     if(x){
-         tree_node* b = x->right;
-         node->left = b;
-         if(b){
-             b->parent = node;
-         }
-         x->parent = grandparent;
-         x->right = node;
-         node->parent = x;
-     }
-     if(grandparent){
-         if(node == grandparent->right){
-             grandparent->right = x;
-         }else{
-             grandparent->left = x;
-         }
-     }else{
-         root = x;
-     }
+void SplayTree::right_rotate( tree_node* node ) {
+    tree_node* x = node->left;
+    tree_node* grandparent = node->parent;
+    if(x){
+        tree_node* b = x->right;
+        node->left = b;
+        if(b){
+            b->parent = node;
+        }
+        x->parent = grandparent;
+        x->right = node;
+        node->parent = x;
+    }
+    if(grandparent){
+        if(node == grandparent->right){
+            grandparent->right = x;
+        }else{
+            grandparent->left = x;
+        }
+    }else{
+        root = x;
+    }
+    if(x){
+        int l_height,r_height,lx_height;
+        if(node->left){
+            l_height = node->left->height;
+        }else{
+            l_height = 0;
+        }
+        if(node->right){
+            r_height = node->right->height;
+        }else{
+            r_height = 0;
+        }
+        if(r_height > l_height){
+            node->height = r_height+1;
+        }else{
+            node->height = l_height+1;
+        }
+        if(x->left){
+            lx_height = x->left->height;
+        }else{
+            lx_height = 0;
+        }
+        if(lx_height > node->height){
+            x->height = lx_height  + 1;
+        }else{
+            x->height = node->height + 1;
+        }
+    }
  }

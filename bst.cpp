@@ -1,9 +1,7 @@
 #include "bst.h"
 #include <iostream>
 #include <iomanip>
-#include <stdio.h>
-#include <stdlib.h>
-
+#include <string>
 using namespace std;
 
 BinarySearchTree::BinarySearchTree()
@@ -21,7 +19,6 @@ BinarySearchTree::tree_node* BinarySearchTree::busqueda(int data){
     curr = root;
     while(curr)    {
         if(data == curr->data){
-            cout<<curr->data<<endl;
             return curr;
         }
         else if(data < curr->data){
@@ -41,6 +38,7 @@ BinarySearchTree::tree_node* BinarySearchTree::insertar(int data)
     child->data = data;
     child->left = NULL;
     child->right = NULL;
+    child->height = 1;
     parent = NULL;
 
     // si esta vacio
@@ -59,15 +57,41 @@ BinarySearchTree::tree_node* BinarySearchTree::insertar(int data)
             if(child->data > curr->data){
                 curr = curr->right;
             }
-            else{
+            else if(child->data < curr->data){
                 curr = curr->left;
+            }else{
+                return curr;
             }
         }
+        curr = parent;
+        fix_height(curr);
         if(child->data < parent->data)parent->left = child;
         else parent->right = child;
         child->parent = parent;
     }
     return child;
+}
+
+void BinarySearchTree::fix_height(tree_node* node){
+    int rheight, lheight;
+    while(node){
+        if(node->left){
+            lheight = node->left->height;
+        }else{
+            lheight = 1;
+        }
+        if(node->right){
+            rheight = node->right->height;
+        }else{
+            rheight = 1;
+        }
+        if(lheight > rheight){
+            node->height = lheight + 1;
+        }else{
+            node->height = rheight + 1;
+        }
+        node=node->parent;
+    }
 }
 
 void BinarySearchTree::bst_print_dot_null(int data, int nullcount, FILE* stream)
@@ -82,7 +106,9 @@ void BinarySearchTree::bst_print_dot_aux(tree_node* node, FILE* stream)
 
     if (node->left)
     {
+        fprintf(stream, "    %d [fontname=\"Arial\" label=\"%d[%d]\"];\n",node->data,node->data,node->height);
         fprintf(stream, "    %d -> %d;\n", node->data, node->left->data);
+        //fprintf(stream, "    %d %d -> %d %d;\n", node->height, node->data,node->left->height, node->left->data);
         bst_print_dot_aux(node->left, stream);
     }
     else
@@ -90,13 +116,24 @@ void BinarySearchTree::bst_print_dot_aux(tree_node* node, FILE* stream)
 
     if (node->right)
     {
+        fprintf(stream, "    %d [fontname=\"Arial\" label=\"%d[%d]\"];\n",node->data,node->data,node->height);
         fprintf(stream, "    %d -> %d;\n", node->data, node->right->data);
+        //fprintf(stream, "    %d %d -> %d %d;\n", node->height, node->data,node->right->height, node->right->data);
         bst_print_dot_aux(node->right, stream);
     }
     else
         bst_print_dot_null(node->data, nullcount++, stream);
 }
 
+void BinarySearchTree::imprimir(tree_node* nodo){
+    if (nodo == NULL)nodo = root;
+    if(nodo != NULL){
+        imprimir(nodo->left);
+        cout << nodo->data << endl;
+        imprimir(nodo->right);
+    }
+
+}
 void BinarySearchTree::bst_print_dot(tree_node* tree, FILE* stream)
 {
     if(isEmpty()){

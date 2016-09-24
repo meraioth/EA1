@@ -2,183 +2,101 @@
 #include <iostream>
 using namespace std;
 
-BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* p, int data) 
+BinarySearchTree::tree_node* AVL::insertar_avl(int data)
 {
-    cout<<"insertando : "<<data<<endl;
-    if(isEmpty()) {
-        cout<<"es raiz"<<endl;
-        BinarySearchTree::tree_node* child = new tree_node;
-        child->data = data;
-        child->left = NULL;
-        child->right = NULL;
-        root=child;
-        return root;
-
-
-    }
-    if( !p){ 
-    
-	    	BinarySearchTree::tree_node* child = new tree_node;
-		    child->data = data;
-		    child->left = NULL;
-		    child->right = NULL;
-            cout<<"creo nueva hoja"<<endl;
-		    return child;
-			}
-    if( data<p->data ){
-       cout<<"el dato:"<<data<<" es hijo izquierdo"<<endl;
-        p->left = insert(p->left,data);
-        //cout<<"padre :"<<p->data<<endl;
-    }
-    else{
-        cout<<"el dato:"<<data<<" es hijo derecho"<<endl;
-        p->right = insert(p->right,data);
-       // cout<<"padre :"<<p->data<<" hijo derecho :"<<p->left->data<<endl;
-    }
-    imprimir(NULL);
-    return balance(p);
-}
-
-// BinarySearchTree::tree_node* AVL::insert(BinarySearchTree::tree_node* root, int value){
-//     if (root == NULL)
-//     {
-//         root = new BinarySearchTree::tree_node;
-//         root->data = value;
-//         root->left = NULL;
-//         root->right = NULL;
-//         return root;
-//     }
-//     else if (value < root->data)
-//     {
-//         root->left = insert(root->left, value);
-//         root = balance (root);
-//     }
-//     else if (value >= root->data)
-//     {
-//         root->right = insert(root->right, value);
-//         root = balance (root);
-//     }
-//     return root;
-// }
-
-BinarySearchTree::tree_node* AVL::insertar(int data){
-    
-    cout<<"insertando : "<<data<<endl;
-    return insert(root,data);
-}
-
-
-
-int AVL::height(BinarySearchTree::tree_node* temp)
-{
-    int h = 0;
-    if (temp != NULL)
-    {
-        int l_height = height (temp->left);
-        int r_height = height (temp->right);
-        int max_height = max (l_height, r_height);
-        h = max_height + 1;
-        cout<<"altura de :"<<temp->data<<" :"<<h<<endl;
-    }
-
-    return h;
+    tree_node* nodo = insertar(data);
+    balance(nodo);
 }
 
 int AVL::bfactor(BinarySearchTree::tree_node* temp)
 {
-    cout<<"nodo del bfactor"<<temp->data<<endl;
-    int l_height = height (temp->left);
-    cout<<"altura izq"<<l_height<<endl;
-    int r_height = height (temp->right);
-    cout<<"altura der"<<r_height<<endl;
+    int l_height,r_height;
+    if(temp->left){
+        l_height = temp->left->height;
+    }else{
+        l_height = 0;
+    }
+    if(temp->right){
+        r_height = temp->right->height;
+    }else{
+        r_height = 0;
+    }
     int b_factor= l_height - r_height;
-    cout<<b_factor<<endl;
-
     return b_factor;
 }
 
-BinarySearchTree::tree_node* AVL::rr_rotation(BinarySearchTree::tree_node* p){
-    tree_node * temp;
-    temp=p->right;
-    p->right=temp->left;
-    temp->left=p;
-    return temp;
-
-
-}
-
-
-BinarySearchTree::tree_node* AVL::ll_rotation(BinarySearchTree::tree_node* p){
-    tree_node * temp;
-    temp=p->left;
-    p->left=temp->right;
-    temp->right=p;
-    
-
-    return temp;
-
-
-}
-
-BinarySearchTree::tree_node* AVL::lr_rotation(BinarySearchTree::tree_node* p){
-    tree_node * temp;
-    temp=p->left;
-    p->left=rr_rotation(temp);
-    
-    return ll_rotation(p);
-
-
-}
-BinarySearchTree::tree_node* AVL::rl_rotation(BinarySearchTree::tree_node* p){
-    tree_node * temp;
-    temp=p->right;
-    p->right=ll_rotation(temp);
-    
-    return rr_rotation(p);
-
-
-}
-
-
-BinarySearchTree::tree_node* AVL::balance(BinarySearchTree::tree_node* p)
+void AVL::balance(BinarySearchTree::tree_node* node)
 {
-    int b_factor=bfactor(p);
-    cout<<"b_factor nodo:"<<p->data<<" :"<< b_factor<<endl;
-    if( b_factor>1)
-    {
-        if( bfactor(p->left) > 0 )
-            p = ll_rotation(p);
-        else 
-            p=lr_rotation(p);
-    }
-    else if( b_factor < -1 )
-    {
-        if( bfactor(p->right) > 0  )
-            p = rl_rotation(p);
-        else 
-            p=rr_rotation(p);
-    }
-    return p;
-}
+    int b_factor;
+    while (node){
+        b_factor = bfactor(node);
+        if(b_factor >1){
+            if(bfactor(node->left) >= 0){
+                right_rotate(node);
+            }else{
+                left_rotate(node->left);
+                right_rotate(node);
+            }
 
-void AVL::display(tree_node *ptr, int level)
-{
-    int i;
-    if (ptr!=NULL)
-    {
-        display(ptr->right, level + 1);
-        cout<<"\n";
-        if (ptr == root)
-        cout<<"Root -> ";
-        for (i = 0; i < level && ptr != root; i++)
-            cout<<"        ";
-        cout<<ptr->data;
-        display(ptr->left, level + 1);
+        }else if(b_factor < -1){
+            if(bfactor(node->right) > 0){
+                right_rotate(node->right);
+                left_rotate(node);
+            }else{
+                left_rotate(node);
+            }
+        }
+        node = node->parent;
+
     }
 }
-void AVL::dis(){
-    return display(root,1);
+
+void AVL::left_rotate( tree_node* node ) {
+    tree_node* x = node->right;
+    tree_node* grandparent = node->parent;
+    if(x){
+        tree_node* b = x->left;
+        node->right = b;
+        if(b){
+            b->parent = node;
+        }
+        x->parent = grandparent;
+        x->left = node;
+        node->parent = x;
+    }
+    if(grandparent){
+        if(node == grandparent->right){
+            grandparent->right = x;
+        }else{
+            grandparent->left = x;
+        }
+    }else{
+        root = x;
+    }
+    fix_height(node);
 }
 
-
-
+void AVL::right_rotate( tree_node* node ) {
+    tree_node* x = node->left;
+    tree_node* grandparent = node->parent;
+    if(x){
+        tree_node* b = x->right;
+        node->left = b;
+        if(b){
+            b->parent = node;
+        }
+        x->parent = grandparent;
+        x->right = node;
+        node->parent = x;
+    }
+    if(grandparent){
+        if(node == grandparent->right){
+            grandparent->right = x;
+        }else{
+            grandparent->left = x;
+        }
+    }else{
+        root = x;
+    }
+    fix_height(node);
+ }
